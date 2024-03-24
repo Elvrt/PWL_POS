@@ -20,7 +20,14 @@ class KategoriDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
-            ->setRowId('id');
+        ->setRowId('id')
+        ->addColumn('action', function ($row) {
+            $editButton = '<a href="' . route('kategori.edit', $row->kategori_id) . '" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> </a>&nbsp';
+
+            $deleteButton = '<a href="' . route('kategori.delete', $row->kategori_id) . '" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin ingin menghapus kategori ini?\')"><i class="fa fa-trash"></i></a>';
+
+            return $editButton . ' ' . $deleteButton;
+        });
     }
 
     /**
@@ -63,6 +70,7 @@ class KategoriDataTable extends DataTable
             Column::make('kategori_nama'),
             Column::make('created_at'),
             Column::make('updated_at'),
+            Column::make('action'),
         ];
     }
 
