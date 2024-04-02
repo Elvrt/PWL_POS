@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\DataTables\KategoriDataTable;
 use App\Models\KategoriModel;
+use Illuminate\Http\RedirectResponse;
 
 class KategoriController extends Controller
 {
@@ -17,13 +18,13 @@ class KategoriController extends Controller
         return view('kategori.create');
     }
 
-    public function store(Request $request){
-        KategoriModel::create([
-            'kategori_kode' => $request->kodeKategori,
-            'kategori_nama'=> $request->namaKategori,
-        ]);
-        return redirect('/kategori');
-    }
+    // public function store(Request $request){
+    //     KategoriModel::create([
+    //         'kategori_kode' => $request->kodeKategori,
+    //         'kategori_nama'=> $request->namaKategori,
+    //     ]);
+    //     return redirect('/kategori');
+    // }
 
     public function edit($id) {
         $kategori = KategoriModel::find($id);
@@ -51,6 +52,27 @@ class KategoriController extends Controller
 
         return redirect('/kategori')->with('success', 'Kategori berhasil diupdate');
     }
+
+    // public function store(Request $request) : RedirectResponse  {
+    //     $validated = $request->validate([
+    //         'kategori_kode' => $request->kodeKategori,
+    //         'kategori_nama'=> $request->namaKategori,
+    //     ]);
+    //     return redirect('/kategori');
+    // }
+
+    public function store(Request $request) : RedirectResponse  {
+        $validated = $request->validate([
+            // 'kategori_kode' => ['required', 'unique:m_kategori', 'max:10'],
+            // 'kategori_nama'=> ['required']
+
+            'kategori_kode' => 'bail|required|unique:m_kategori|max:10',
+            'kategori_nama'=> 'bail|required|unique:m_kategori',
+        ]);
+        return redirect('/kategori');
+    }
+
+
 
 }
   
