@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
 use App\Models\User;
 use App\Models\UserModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,7 +14,7 @@ class UserController extends Controller
     public function index(){
 
         $user = UserModel::with('level')->get();
-        dd($user);
+        ($user);
         
     }
     public function tambah(){
@@ -26,7 +28,8 @@ class UserController extends Controller
         'password' => Hash::make($request->password),
         'level_id' => $request->level_id
     ]);
-
+    $validated = $request->safe()->only(['level_id', 'username', 'nama', 'password']);
+    $validated = $request->safe()->except(['level_id', 'username', 'nama', 'password']);
     return redirect('/user');
     }
 

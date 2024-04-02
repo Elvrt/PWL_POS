@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\POSController;
 use App\Http\Controllers\UserController;
 use Database\Seeders\KategoriSeeder;
 use Illuminate\Support\Facades\Route;
@@ -48,4 +49,6 @@ Route::put('/kategori/update/{id}', [KategoriController::class, 'update'])->name
 
 
 Route::get('/level/tambah', [LevelController::class,'tambah']);
+
+Route::resource('m_user', POSController::class);
 

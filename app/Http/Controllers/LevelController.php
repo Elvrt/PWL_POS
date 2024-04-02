@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,4 +26,16 @@ class LevelController extends Controller
     public function tambah(){
         return view('level_tambah');
 }
+public function tambah_simpan(StorePostRequest $request): RedirectResponse {
+
+    //The incoming request is valid...
+
+    //Retrive the validated input data...
+    $validated = $request->validated();
+
+    //Retrive a portion of the validated input data...
+    $validated = $request->safe()->only(['level_kode', 'level_nama']);
+    $validated = $request->safe()->except(['level_kode', 'level_nama']);
+    return redirect('/level');
+    }
 }
