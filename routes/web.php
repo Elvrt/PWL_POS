@@ -46,3 +46,6 @@ Route::get('/kategori/edit/{id}', [KategoriController::class, 'edit'])->name('ka
 
 Route::put('/kategori/update/{id}', [KategoriController::class, 'update'])->name('kategori.update');
 
+
+Route::get('/level/tambah', [LevelController::class,'tambah']);
+
