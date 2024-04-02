@@ -1,5 +1,9 @@
-@extends('m_user/template')
+@extends('layout.app')
+
+@section('subtitle', 'User')
+@section('content_header_title', 'User Create')
 @section('content')
+
     <div class="row mt-5 mb-5">
         <div class="col-lg-12 margin-tb">
             <div class="float-left">
@@ -23,6 +27,8 @@
                 <th width="200px"class="text-center">Username</th>
                 <th width="200px"class="text-center">Nama</th>
                 <th width="150px"class="text-center">Password</th>
+                <th width="150px" class="text-center">Level Kode</th>
+                <th width="150px" class="text-center">Level Nama</th>
         </tr>
         @foreach ($useri as $m_user)
             <tr>
@@ -32,6 +38,8 @@
                 <td>{{ $m_user->username }}</td>
                 <td>{{ $m_user->nama }}</td>
                 <td>{{ $m_user->password }}</td>
+                <td>{{ $m_user->level->level_kode }}</td>
+                <td>{{ $m_user->level->level_nama }}</td>
 
                 <td class="text-center" style="white-space: nowrap;">
                     <form action="{{ route('m_user.destroy', $m_user->user_id) }}" method="POST">
