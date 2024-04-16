@@ -135,12 +135,12 @@ public function update(Request $request, string $id)
             'level_id' => 'required|integer'
         ]);
 
-        $user = UserModel::find($id);
-        $user->username = $request->username;
-        $user->nama = $request->nama;
-        $user->password = $request->password ? bcrypt($request->password) : $user->password;
-        $user->level_id = $request->level_id;
-        $user->save();
+        UserModel::find($id)->update([
+            'username'    => $request->username,
+            'nama'        => $request->nama,
+            'password'    => $request->password ? bcrypt($request->password) : UserModel::find($id)->password,
+            'level_id'    => $request->level_id
+        ]);
 
     return redirect('/user')->with("success", "Data user berhasil diubah");
 }

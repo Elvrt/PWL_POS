@@ -4,7 +4,7 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('kategori/create') }}">Tambah</a>
+                <a class="btn btn-sm btn-primary mt-1" href="{{ url('barang/create') }}">Tambah</a>
             </div>
         </div>
         <div class="card-body">
@@ -18,25 +18,28 @@
                 <div classs="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label class="col-1 control-label col-form-label">Filter:</label>
+                            <lebel class="col-1 control-label col-form-label">Filter:</label>
                                 <div class="col-3">
-                                    <select class="form-control" id="kategori_id" name="kategori_id" required>
+                                    <select class="form-control" id="kategori_id" name="kategroi_id" required>
                                         <option value="">-  Semua -</option>
                                         @foreach($kategori as $item)
                                             <option value="{{ $item->kategori_id }}">{{ $item->kategori_nama }}</option>
                                         @endforeach
                                     </select>
-                                    <small class="form-text text-muted">kategori</small>
+                                    <small class="form-text text-muted">Kategori barang</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-            <table class="table table-bordered table-striped table-hover table-sm" id="table_kategori">
+            <table class="table table-bordered table-striped table-hover table-sm" id="table_barang">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>kategori kode</th>
-                        <th>Nama kategori</th>
+                        <th>Id barang</th>
+                        <th>Kode barang</th>
+                        <th>Nama barang</th>
+                        <th>Kategori barang</th>
+                        <th>Harga beli</th>
+                        <th>Harga jual</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -51,10 +54,10 @@
 @push('js')
 <script>
     $(document).ready(function() {
-        var dataKategori = $('#table_kategori').DataTable({
+        var dataBarang = $('#table_barang').DataTable({
             serverSide: true,
             ajax: {
-                "url": "{{ url('kategori/list') }}",
+                "url": "{{ url('barang/list') }}",
                 "dataType": "json",
                 "type": "POST",
                 "data": function (d) {
@@ -68,13 +71,31 @@
                     searchable: false
                 },
                 {
-                    data: "kategori_kode",
+                    data: "barang_kode",
                     className: "",
                     orderable: true,
                     searchable: true
                 },
                 {
-                    data: "kategori_nama",
+                    data: "barang_nama",
+                    className: "",
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: "kategori.kategori_nama",
+                    className: "",
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: "harga_beli",
+                    className: "",
+                    orderable: true,
+                    searchable: true
+                },
+                {
+                    data: "harga_jual",
                     className: "",
                     orderable: true,
                     searchable: true
@@ -89,7 +110,7 @@
         });
         
         $('#kategori_id').on('change', function() {
-                dataKategori.ajax.reload();
+                dataBarang.ajax.reload();
             });
 
     });
