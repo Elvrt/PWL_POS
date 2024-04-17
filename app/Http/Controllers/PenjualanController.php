@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\BarangModel;
 use App\Models\PenjualanModel;
 use App\Models\DetailPenjualanModel;
+use App\Models\StokModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,6 +109,10 @@ public function index(){
             'jumlah'     => $request->jumlah
         ]);
 
+         // Kurangi stok barang yang terjual
+        $stok = StokModel::where('barang_id', $request->barang_id)->latest()->first(); // Ambil entri stok terbaru
+        $stok->stok_jumlah -= $request->jumlah; // Kurangi jumlah stok dengan jumlah barang yang terjual
+        $stok->save(); // Simpan perubahan jumlah stok
 
         return redirect('/penjualan')->with('success','Data penjualan berhasil disimpan');
     }

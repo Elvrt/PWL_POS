@@ -23,7 +23,7 @@
                                     <select class="form-control" id="user_id" name="user_id" required>
                                         <option value="">-  Semua -</option>
                                         @foreach($user as $item)
-                                            <option value="{{ $item->user_id }}">{{ $item->user_nama }}</option>
+                                            <option value="{{ $item->user_id }}">{{ $item->username }}</option>
                                         @endforeach
                                     </select>
                                     <small class="form-text text-muted">user</small>
