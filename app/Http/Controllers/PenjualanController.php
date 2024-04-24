@@ -87,7 +87,8 @@ public function index(){
             'user_id'          => 'required|integer',
             'pembeli'          => 'required|string|max:100',
             'penjualan_tanggal'=> 'required|date_format:Y-m-d\TH:i',
-            'barang_id'        => 'required|integer',
+            'barang_id'        => 'required|array', 
+            'barang_id.*'      => 'required|integer', 
             'jumlah'           => 'required|integer'
         ]);
         $penjualan = PenjualanModel::create([

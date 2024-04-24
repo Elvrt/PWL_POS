@@ -54,12 +54,14 @@
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label"> Barang </label>
                     <div class="col-11">
-                        <select class="form-control" id="barang_id" name="barang_id" required>
-                            <option value="">- Pilih Barang -</option>
-                            @foreach ($barang as $item)
-                                <option value="{{ $item->barang_id }}">{{ $item->barang_nama }}</option>
-                            @endforeach
-                        </select>
+                        @foreach ($barang as $item)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="barang_{{ $item->barang_id }}" name="barang_id[]" value="{{ $item->barang_id }}">
+                                <label class="form-check-label" for="barang_{{ $item->barang_id }}">
+                                    {{ $item->barang_nama }}
+                                </label>
+                            </div>
+                        @endforeach
                         @error('barang_id')
                             <small class="form-text text-danger">{{ $message }}</small>
                         @enderror

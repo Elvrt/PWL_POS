@@ -85,6 +85,16 @@ public function index(){
             'stok_jumlah' => 'required|integer'
         ]);
 
+     // Cek apakah stok barang dengan barang_id dan tanggal yang sama sudah ada atau tidak
+    $StokAda = StokModel::where('barang_id', $request->barang_id)
+    ->where('stok_jumlah', $request->stok_jumlah)
+    ->first();
+
+    if ($StokAda) {
+    // Jika stok barang sudah ada 
+    return redirect('/stok')->with('error', 'Stok barang dengan barang yang sama sudah ada');
+    }
+
         StokModel::create ([
             'barang_id'    => $request->barang_id,
             'user_id'      => $request->user_id,
