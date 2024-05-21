@@ -12,8 +12,15 @@ class BarangController extends Controller
         return BarangModel::all();
     }
 
-    public function store(Request $request){
-        $barang = BarangModel::create($request->all());
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        if ($request->hasFile('image')) {
+            $request->file('image')->storeAs('/posts', $request->image->hashName());
+            $data['image'] = $request->image->hashName();
+        }
+
+        $barang = BarangModel::create($data);
         return response()->json($barang, 201);
     }
 
@@ -21,10 +28,18 @@ class BarangController extends Controller
         return BarangModel::find($barang);
     }
 
-    public function update(Request $request, BarangModel $barang){
-        $barang->update($request->all());
-        return BarangModel::find($barang);
+    public function update(Request $request, $id)
+{
+    $barang = BarangModel::findOrFail($id);
+    $data = $request->all();
+
+    if ($request->hasFile('image')) {
+        $request->file('image')->storeAs('/posts', $request->image->hashName());
+        $data['image'] = $request->image->hashName();
     }
+    $barang->update($data);
+    return response()->json($barang, 200);
+}
 
     public function destroy(BarangModel $barang){
         $barang->delete();
