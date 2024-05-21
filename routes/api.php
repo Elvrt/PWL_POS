@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\BarangController;
 use App\Http\Controllers\Api\KategoriController;
 use App\Http\Controllers\Api\LevelController;
+use App\Http\Controllers\Api\TransaksiController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
@@ -28,6 +29,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/logout', App\Http\Controllers\Api\LogoutController::class)->name('logout');
+
+Route::post('/register1', App\Http\Controllers\Api\RegisterController::class)->name('register1');
+
+Route::get('/transaksi/{penjualan}', [TransaksiController::class, 'show']);
 
 
 Route::get('levels', [LevelController::class, 'index']);
