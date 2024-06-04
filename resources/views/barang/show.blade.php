@@ -39,10 +39,8 @@
                         <td>{{ $barang->harga_jual }}</td>
                     </tr>
                     <tr>
-                        <th>Image</th>
-                        <td>
-                            <img src="{{ asset($barang->image) }}" alt="{{ $barang->barang_nama }}" class="img-thumbnail" width="100">
-                        </td>
+                        <th>Gambar Barang</th>
+                        <td><img src="{{ $barang->image }}"></td>
                     </tr>
               
                 </table>

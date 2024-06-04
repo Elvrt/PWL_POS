@@ -26,7 +26,7 @@ public function index(){
 }
     public function list(Request $request)
 {
-    $barangs = BarangModel::select('barang_id', 'barang_kode', 'barang_nama', 'kategori_id', 'harga_beli', 'harga_jual')
+    $barangs = BarangModel::select('barang_id', 'barang_kode', 'barang_nama', 'kategori_id', 'harga_beli', 'harga_jual', 'image')
                     ->with('kategori');
 
         //filter data barang berdasarkan kategori_id
@@ -78,15 +78,25 @@ public function index(){
             'barang_nama'  => 'required|string|max:100',
             'kategori_id'  => 'required|integer',
             'harga_beli'   => 'required|integer',
-            'harga_jual'   => 'required|integer'
+            'harga_jual'   => 'required|integer',
+            'image'        => 'required|file|image|max:2048'
         ]);
+
+        $extfile = $request->image->getClientOriginalName();
+        $namaFile = 'web-' . time() . "." . $extfile;
+
+        $path = $request->image->move('gambarStarterCode', $namaFile);
+        $path = str_replace("\\", "//", $path);
+        $pathBaru = asset('gambarStarterCode/' . $namaFile);
 
         BarangModel::create ([
             'barang_kode'    => $request->barang_kode,
             'barang_nama'    => $request->barang_nama,
             'kategori_id'    => $request->kategori_id,
             'harga_beli'     => $request->harga_beli,
-            'harga_jual'     => $request->harga_jual
+            'harga_jual'     => $request->harga_jual,
+            'image'          => $pathBaru
+            
         ]);
 
         return redirect('/barang')->with('success','Data barang berhasil disimpan');
@@ -131,19 +141,28 @@ public function index(){
 public function update(Request $request, string $id)
 {
         $request->validate([
-            'barang_kode'  => 'required|string|min:3|unique:m_barang,barang_kode',
+            'barang_kode' => 'required|string|min:2|unique:m_barang,barang_kode,' . $id . ',barang_id',
             'barang_nama'  => 'required|string|max:100',
             'kategori_id'  => 'required|integer',
             'harga_beli'   => 'required|integer',
             'harga_jual'   => 'required|integer',
+            'image'        => 'required|file|image|max:2048'
         ]);
+
+        $extfile = $request->image->getClientOriginalName();
+        $namaFile = 'web-' . time() . "." . $extfile;
+
+        $path = $request->image->move('gambarStarterCode', $namaFile);
+        $path = str_replace("\\", "//", $path);
+        $pathBaru = asset('gambarStarterCode/' . $namaFile);
 
         BarangModel::find($id)->update([
             'barang_kode'    => $request->barang_kode,
             'barang_nama'    => $request->barang_nama,
             'kategori_id'    => $request->kategori_id,
             'harga_beli'     => $request->harga_beli,
-            'harga_jual'     => $request->harga_jual
+            'harga_jual'     => $request->harga_jual,
+            'image'       => $request->image ? $pathBaru : basename(BarangModel::find($id)->image)
         ]);
 
     return redirect('/barang')->with("success", "Data barang berhasil diubah");

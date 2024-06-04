@@ -34,6 +34,10 @@
                         <th>Password</th>
                         <td>********</td>
                     </tr>
+                    <tr>
+                        <th>Foto Pengguna</th>
+                        <td><img src="{{ $user->image }}" alt="Foto Pengguna" width="100"></td>
+                    </tr>
                 </table>
             @endempty
             <a href="{{ url('user') }}" class="btn btn-sm btn-default mt-2">Kembali</a>

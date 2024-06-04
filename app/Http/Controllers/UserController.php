@@ -26,7 +26,7 @@ public function index(){
 }
     public function list(Request $request)
 {
-    $users = UserModel::select('user_id', 'username', 'nama', 'level_id')
+    $users = UserModel::select('user_id', 'username', 'nama', 'level_id', 'image')
                     ->with('level');
 
         //filter data user berdasarkan level_id
@@ -77,14 +77,23 @@ public function index(){
             'username' => 'required|string|min:3|unique:m_user,username',
             'nama' => 'required|string|max:100',//nama harus diisi, berupa string dan maksimal 100 karakter
             'password' => 'required|min:5', //password harus diisi dan minimal 5 karakter
-            'level_id' => 'required|integer' //level_id harus diisi dan berupa angka
+            'level_id' => 'required|integer',//level_id harus diisi dan berupa angka
+            'image' => 'required|file|image|max:2048'
         ]);
+        $extfile = $request->image->getClientOriginalName();
+        $namaFile = 'web-' . time() . "." . $extfile;
+
+        $path = $request->image->move('gambarStarterCode', $namaFile);
+        $path = str_replace("\\", "//", $path);
+        $pathBaru = asset('gambarStarterCode/' . $namaFile);
 
         UserModel::create ([
             'username' => $request->username,
             'nama' => $request -> nama,
             'password' => bcrypt($request->password), // password dienkripsi sebelum disimpan
-            'level_id' => $request->level_id
+            'level_id' => $request->level_id,
+            'image' => $pathBaru
+
         ]);
 
         return redirect('/user')->with('success','Data user berhasil disimpan');
@@ -132,14 +141,22 @@ public function update(Request $request, string $id)
             'username' => 'required|string|min:3|unique:m_user,username,' . $id . ',user_id',
             'nama' => 'required|string|max:100',
             'password' => 'nullable|min:5',
-            'level_id' => 'required|integer'
+            'level_id' => 'required|integer',
+            'image' => 'required|file|image|max:2048'
         ]);
+        $extfile = $request->image->getClientOriginalName();
+        $namaFile = 'web-' . time() . "." . $extfile;
+
+        $path = $request->image->move('gambarStarterCode', $namaFile);
+        $path = str_replace("\\", "//", $path);
+        $pathBaru = asset('gambarStarterCode/' . $namaFile);
 
         UserModel::find($id)->update([
             'username'    => $request->username,
             'nama'        => $request->nama,
             'password'    => $request->password ? bcrypt($request->password) : UserModel::find($id)->password,
-            'level_id'    => $request->level_id
+            'level_id'    => $request->level_id,
+            'image'       => $request->image ? $pathBaru : basename(UserModel::find($id)->image)
         ]);
 
     return redirect('/user')->with("success", "Data user berhasil diubah");
